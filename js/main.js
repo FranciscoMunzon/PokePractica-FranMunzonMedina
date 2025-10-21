@@ -32,39 +32,49 @@ botonMostrar.addEventListener("click", mostrarColorOriginal);
 const listaPokemon = document.getElementById("listaPokemon");
 const divP = document.querySelector(".pokemon-todos");
 
+const buscarInput = document.getElementById("buscarInput");
+const buscarBtn = document.getElementById("buscarBtn");
+
+
 botonMostrar.addEventListener("click", () => {
+  
+  divP.innerHTML = "";
 
-divP.innerHTML = "";
+  fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
+    .then((response) => response.json())
+    .then((data) => {
+      const pokemonsTemp = [];
 
-fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-  .then((response) => response.json())
-  .then((data) => {
-    const pokemons = [];
+      data.results.forEach((pokemon) => {
+        fetch(pokemon.url)
+          .then((res) => res.json())
+          .then((pokeData) => {
+            pokemonsTemp.push(pokeData);
 
-    data.results.forEach((pokemon) => {
-      fetch(pokemon.url)
-        .then((res) => res.json())
-        .then((pokeData) => {
-          pokemons.push(pokeData);
-
-          if (pokemons.length === 151) {
-            pokemons.sort((a, b) => a.id - b.id);
-            mostrarPokemons(pokemons);
-          }
-        });
+            if (pokemonsTemp.length === 151) {
+              pokemonsTemp.sort((a, b) => a.id - b.id);
+              guardarPokemon = pokemonsTemp;
+              mostrarPokemon(pokemonsTemp);
+            }
+          });
+      });
     });
-  });
+});
 
-function mostrarPokemons(lista) {
+function mostrarPokemon(lista) {
+  listaPokemon.innerHTML = "";
+
   lista.forEach((pokeData) => {
     const div = document.createElement("div");
     div.classList.add("pokemon");
 
     const id = pokeData.id.toString().padStart(3, "0");
     const tipos = pokeData.types
-      .map(tipo => `<p class="tipo ${tipo.type.name}">${tipo.type.name}</p>`)
+      .map(
+        (tipo) => `<p class="tipo ${tipo.type.name}">${tipo.type.name}</p>`
+      )
       .join("");
-      
+
     div.innerHTML = `
       <div class="pokemon-imagen">
         <img src="${pokeData.sprites.other["official-artwork"].front_default}" alt="${pokeData.name}">
@@ -83,4 +93,21 @@ function mostrarPokemons(lista) {
     listaPokemon.appendChild(div);
   });
 }
+
+// Ejercicio 3:
+
+buscarBtn.addEventListener("click", () => {
+  const texto = buscarInput.value.toLowerCase().trim();
+
+  const filtrados = guardarPokemon.filter((p) =>
+    p.name.toLowerCase().equals(texto)
+  );
+
+  mostrarPokemon(filtrados);
+});
+
+buscarInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") {
+    buscarBtn.click();
+  }
 });

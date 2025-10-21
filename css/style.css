@@ -167,3 +167,27 @@ main{
 .dragon { background-color: var(--type-dragon); color: var(--clr-white); }
 .steel { background-color: var(--type-steel); color: var(--clr-black); }
 .fairy { background-color: var(--type-fairy); color: var(--clr-black); }
+
+.buscador {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+#buscarInput {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+#buscarBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background-color: #ff4444;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
