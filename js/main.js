@@ -30,8 +30,12 @@ botonMostrar.addEventListener("click", mostrarColorOriginal);
 // Ejercicio 2:
 
 const listaPokemon = document.getElementById("listaPokemon");
+const divP = document.querySelector(".pokemon-todos");
 
 botonMostrar.addEventListener("click", () => {
+
+divP.innerHTML = "";
+
 fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
   .then((response) => response.json())
   .then((data) => {
@@ -60,7 +64,7 @@ function mostrarPokemons(lista) {
     const tipos = pokeData.types
       .map(tipo => `<p class="tipo ${tipo.type.name}">${tipo.type.name}</p>`)
       .join("");
-
+      
     div.innerHTML = `
       <div class="pokemon-imagen">
         <img src="${pokeData.sprites.other["official-artwork"].front_default}" alt="${pokeData.name}">
