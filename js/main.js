@@ -35,15 +35,14 @@ botonMostrar.addEventListener("click", () => {
 fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
   .then((response) => response.json())
   .then((data) => {
-    const pokemons = []; // lista temporal para guardar todos los Pokémon
+    const pokemons = [];
 
     data.results.forEach((pokemon) => {
       fetch(pokemon.url)
         .then((res) => res.json())
         .then((pokeData) => {
-          pokemons.push(pokeData); // guardamos el Pokémon
+          pokemons.push(pokeData);
 
-          // Cuando ya tenemos los 151, los ordenamos y mostramos
           if (pokemons.length === 151) {
             pokemons.sort((a, b) => a.id - b.id);
             mostrarPokemons(pokemons);
