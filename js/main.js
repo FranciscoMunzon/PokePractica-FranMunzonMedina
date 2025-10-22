@@ -75,6 +75,18 @@ function mostrarPokemon(lista) {
       )
       .join("");
 
+      let habilidadesHTML = "";
+      if (lista.length < 5) {
+        const habilidades = pokeData.abilities
+          .map((h) => h.ability.name)
+          .join(", ");
+        habilidadesHTML = `
+          <div class="pokemon-habilidades">
+            <p><strong>Habilidades:</strong> ${habilidades}</p>
+          </div>
+        `;
+      }
+
     div.innerHTML = `
       <div class="pokemon-imagen">
         <img src="${pokeData.sprites.other["official-artwork"].front_default}" alt="${pokeData.name}">
@@ -87,6 +99,7 @@ function mostrarPokemon(lista) {
         <div class="pokemon-tipos">
           ${tipos}
         </div>
+        ${habilidadesHTML}
       </div>
     `;
 
@@ -100,7 +113,7 @@ buscarBtn.addEventListener("click", () => {
   const texto = buscarInput.value.toLowerCase().trim();
 
   const filtrados = guardarPokemon.filter((p) =>
-    p.name.toLowerCase().equals(texto)
+    p.name.toLowerCase().includes(texto)
   );
 
   mostrarPokemon(filtrados);
